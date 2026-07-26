@@ -1,0 +1,13 @@
+# Java / Maven 编译产物
+target/
+*.class
+
+# IntelliJ IDEA 本地配置
+.idea/
+*.iml
+
+# Claude Code 本机配置（含本地路径，不上传）
+.claude/settings.local.json
+
+# macOS
+.DS_Store
