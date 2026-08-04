@@ -8,10 +8,11 @@
 ---
 
 ## 📍 当前位置
-- **阶段**：阶段二 · 第 3 周（进行中 🔶，第 1 次）
-- **已完成**：第 1、2 周全部 ✅；第 3 周——MySQL 9.7.1 装好并在后台跑 ✅、TablePlus 装好并连上本地库 ✅、`CREATE DATABASE study` + `SHOW DATABASES` + `USE study` 跑通 ✅
-- **卡在哪（下次开场第一件事）**：`todo` 表**还没确认建成**。用户写的建表语句是 `id INT, title VARCHAR(50), done BOOLEAN`，类型选对了，但**漏了 `AUTO_INCREMENT PRIMARY KEY`**，且我没看到执行结果 → 下次先跑 `USE study; SHOW TABLES; DESC todo;` 确认真实状态，再决定是补建还是 `DROP TABLE todo` 重来
-- **下一步**：建好 `todo` 表 → `INSERT` 3 条 → `SELECT * FROM todo;` 看到 3 行 → 再写 `Todo.java` + JPA，产出「从库里读出一条 Todo」
+- **阶段**：阶段二 · 第 3 周（🔄 已重启，2026-08-04）
+- **已完成**：第 1、2 周全部 ✅；第 3 周——仅保留环境层面：MySQL 9.7.1 装好并在后台跑 ✅、TablePlus 装好并连上本地库 ✅（这两项不用重来）
+- **重启说明（2026-08-04）**：用户表示「数据库这块已经忘了学到哪」。核对后确认实际完成度不足 20%——只建了个空库，`todo` 表从未确认建成，增删改查与 JPA 完全没碰 → **SQL 知识部分全部重置，从建表重新学起；环境与工具不重装。**
+- **卡在哪（下次开场第一件事）**：先跑 `SHOW DATABASES;` / `USE study;` / `SHOW TABLES;` 确认库和表的真实状态，再决定是 `DROP TABLE todo` 重建还是从零建
+- **下一步（四小步）**：① 确认环境还活着 → ② 一次把 `todo` 表建对（必须能答：为什么 id 要自增 / 主键管什么 / `VARCHAR(50)` 的 50 指什么）→ ③ `INSERT` / `SELECT` / `UPDATE` / `DELETE` 各手敲一遍 → ④ 写 `Todo.java` + JPA，产出「从库里读出一条 Todo」
 - **继续学时对我说**：「继续」或 `/study-start`
 
 ---
@@ -26,11 +27,14 @@
   - [x] 接口返回 JSON（Person 对象 → getter → JSON）+ `@RequestParam` 接收参数 ✅（2026-07-30）
 
 ### 阶段二：CRUD 打天下
-- [~] 第 3 周：数据库基础 + 连上程序 → 产出：从库里读出一条 Todo（进行中）
-  - [x] 装 MySQL 9.7.1（Homebrew，后台服务，端口 3306，root 无密码）+ TablePlus 26.8.6，客户端连库成功 ✅（2026-07-30）
-  - [x] `CREATE DATABASE` / `SHOW DATABASES` / `USE` 三条 SQL 跑通，`study` 库已建 ✅（2026-07-30）
-  - [ ] `CREATE TABLE todo`（类型已选对，缺主键，**未确认建成**）
+- [~] 第 3 周：数据库基础 + 连上程序 → 产出：从库里读出一条 Todo（🔄 2026-08-04 重启，SQL 部分从头学）
+  - [x] 装 MySQL 9.7.1（Homebrew，后台服务，端口 3306，root 无密码）+ TablePlus 26.8.6，客户端连库成功 ✅（2026-07-30，环境保留不重来）
+  - [ ] 确认环境还活着：`SHOW DATABASES;` / `USE study;` / `SHOW TABLES;` 跑通并看懂结果
+  - [ ] 能自己讲清层级：服务器(3306) → 数据库(study) → 表(todo) → 行
+  - [ ] `CREATE TABLE todo` 一次建对（含 `AUTO_INCREMENT PRIMARY KEY` / `NOT NULL` / `DEFAULT` / 时间字段）
+  - [ ] 能答出三问：为什么 id 要自增、`PRIMARY KEY` 管什么、`VARCHAR(50)` 的 50 指什么
   - [ ] `INSERT` + `SELECT` 看到 3 行数据
+  - [ ] `UPDATE` + `DELETE` 各手敲一遍，眼看数据变化
   - [ ] 写 `Todo.java` 实体 + Spring Data JPA 连库
 - [ ] 第 4 周：查 + 增 → 产出：能新增/查询 Todo
 - [ ] 第 5 周：改 + 删 → 产出：完整增删改查

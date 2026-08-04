@@ -1,0 +1,19 @@
+---
+name: "source-command-study-status"
+description: "快速查看当前学习进度和下一步"
+---
+
+# source-command-study-status
+
+Use this skill when the user asks to run the migrated source command `study-status`.
+
+## Command Template
+
+读取 `PROGRESS.md`，用简洁的方式告诉我：
+
+1. 我现在在**第几阶段 / 第几周**
+2. 已经完成了哪些、还剩哪些（进度总览）
+3. **下一步**具体该做什么
+4. 如果「待补 / 没真正掌握的点」里有内容，提醒我
+
+不要啰嗦，控制在几行内。
