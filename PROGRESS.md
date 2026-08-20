@@ -8,11 +8,11 @@
 ---
 
 ## 📍 当前位置
-- **阶段**：阶段二 · 第 3 周（🔄 已重启，2026-08-04）
-- **已完成**：第 1、2 周全部 ✅；第 3 周——仅保留环境层面：MySQL 9.7.1 装好并在后台跑 ✅、TablePlus 装好并连上本地库 ✅（这两项不用重来）
-- **重启说明（2026-08-04）**：用户表示「数据库这块已经忘了学到哪」。核对后确认实际完成度不足 20%——只建了个空库，`todo` 表从未确认建成，增删改查与 JPA 完全没碰 → **SQL 知识部分全部重置，从建表重新学起；环境与工具不重装。**
-- **卡在哪（下次开场第一件事）**：先跑 `SHOW DATABASES;` / `USE study;` / `SHOW TABLES;` 确认库和表的真实状态，再决定是 `DROP TABLE todo` 重建还是从零建
-- **下一步（四小步）**：① 确认环境还活着 → ② 一次把 `todo` 表建对（必须能答：为什么 id 要自增 / 主键管什么 / `VARCHAR(50)` 的 50 指什么）→ ③ `INSERT` / `SELECT` / `UPDATE` / `DELETE` 各手敲一遍 → ④ 写 `Todo.java` + JPA，产出「从库里读出一条 Todo」
+- **阶段**：阶段二 · 第 4 周（第 3 周于 2026-08-20 ⚠️ 部分通过后推进）
+- **已完成**：第 1、2 周全部 ✅；第 3 周功能产出完成——MySQL `todo` 表 + SQL CRUD + Spring Data JPA 连接 + `GET /todos` 从数据库读取 3 条记录并返回 JSON ✅
+- **当前代码链路**：`GET /todos` → `TodoController.getTodos()` → `todoRepository.findAll()` → Hibernate 自动生成 `SELECT` → MySQL → `List<Todo>` → JSON
+- **卡在哪（下次开场第一件事）**：先不加新功能；让用户对着现有代码逐行讲清 `Todo` / `TodoRepository` / `TodoController`、构造方法注入和 `List<Todo>`，必要时做一个极小 Java 练习
+- **下一步**：基础复述通过后，进入第 4 周 Read——实现 `GET /todos/{id}` 查询单条；再学习 `POST /todos` 新增
 - **继续学时对我说**：「继续」或 `/study-start`
 
 ---
@@ -27,16 +27,20 @@
   - [x] 接口返回 JSON（Person 对象 → getter → JSON）+ `@RequestParam` 接收参数 ✅（2026-07-30）
 
 ### 阶段二：CRUD 打天下
-- [~] 第 3 周：数据库基础 + 连上程序 → 产出：从库里读出一条 Todo（🔄 2026-08-04 重启，SQL 部分从头学）
+- [x] 第 3 周：数据库基础 + 连上程序 → 产出：从库里读出并返回 Todo ✅（2026-08-20，⚠️ 部分通过：功能完成，原理待补）
   - [x] 装 MySQL 9.7.1（Homebrew，后台服务，端口 3306，root 无密码）+ TablePlus 26.8.6，客户端连库成功 ✅（2026-07-30，环境保留不重来）
-  - [ ] 确认环境还活着：`SHOW DATABASES;` / `USE study;` / `SHOW TABLES;` 跑通并看懂结果
-  - [ ] 能自己讲清层级：服务器(3306) → 数据库(study) → 表(todo) → 行
-  - [ ] `CREATE TABLE todo` 一次建对（含 `AUTO_INCREMENT PRIMARY KEY` / `NOT NULL` / `DEFAULT` / 时间字段）
-  - [ ] 能答出三问：为什么 id 要自增、`PRIMARY KEY` 管什么、`VARCHAR(50)` 的 50 指什么
-  - [ ] `INSERT` + `SELECT` 看到 3 行数据
-  - [ ] `UPDATE` + `DELETE` 各手敲一遍，眼看数据变化
-  - [ ] 写 `Todo.java` 实体 + Spring Data JPA 连库
-- [ ] 第 4 周：查 + 增 → 产出：能新增/查询 Todo
+  - [x] 确认环境：`SHOW DATABASES;` / `USE study;` / `SHOW TABLES;` 跑通并看懂结果 ✅（2026-08-04）
+  - [x] 能讲清层级：服务器(3306) → 数据库(study) → 表(todo) → 行 ✅（2026-08-04）
+  - [x] 创建 `todo` 表（含 `AUTO_INCREMENT PRIMARY KEY` / `NOT NULL` / `DEFAULT` / 时间字段）✅（2026-08-04）
+  - [x] 能答出 id 自增、主键唯一、`VARCHAR(50)` 限制 50 字符 ✅（2026-08-04）
+  - [x] `INSERT` + `SELECT` 看到多行数据 ✅（2026-08-04）
+  - [x] `UPDATE` + `DELETE` 各手敲一遍，并完成事务 `ROLLBACK` 实验 ✅（2026-08-04）
+  - [x] `Todo.java` 实体 + `TodoRepository` + JPA 连库，`GET /todos` 返回数据库数据 ✅（2026-08-20）
+- [~] 第 4 周：查 + 增 → 产出：能新增/查询 Todo（进行中）
+  - [x] GET 列表：`GET /todos` → `findAll()` → 返回 JSON ✅（2026-08-20）
+  - [ ] 补牢现有 GET 链路涉及的 Java/JPA 基础（见待补）
+  - [ ] GET 详情：按 id 查询单条 Todo
+  - [ ] POST 新增：请求体变成 Todo 并写入数据库
 - [ ] 第 5 周：改 + 删 → 产出：完整增删改查
 - [ ] 第 6 周：健壮性（校验/异常）→ 产出：乱传参数不崩
 
@@ -58,14 +62,28 @@
 - **IntelliJ 项目结构**：模块 / SDK / 源代码根目录，有直觉但不系统（够用，暂不深挖）
 - ~~接口返回 JSON~~：已理解（return 对象 → Spring 靠 getter 读值 + 定 key 名 → JSON）✅
 - ~~Maven / `pom.xml`~~：已理解（≈ npm/package.json，依赖在 `<dependencies>`）✅
-- **SQL 类型 ≠ Java 类型**：第一次写建表语句时把 `title` 写成了 `String`（Java 写法），SQL 里文本是 `VARCHAR(50)`。已当场改对，但要再练一遍才算稳
-- **`AUTO_INCREMENT` / `PRIMARY KEY` 没讲透**：最终的建表语句里漏了这两个关键字，含义也还没考过（下次必须能答：为什么 id 要自增、主键是干嘛的、`VARCHAR(50)` 的 50 指什么）
+- **SQL 类型 ↔ Java 类型映射仍需巩固**：本次能在引导下写出 `Integer` / `String` / `Boolean` / `LocalDateTime`，但还没有独立完成过一次实体字段映射
+- ~~**`AUTO_INCREMENT` / `PRIMARY KEY` 没讲透**~~：已能答出自动生成递增 id、主键保证唯一且非空 ✅（2026-08-04）
 - **为什么后端必须用数据库**：这题当场答不上来，是我讲的答案（变量存内存→重启就丢；数据库存硬盘→持久 + 多实例共享 + 能高效查）。属于「听懂了但没自己产出」，下次开场要复述一遍
+- **Java 代码结构不稳**：一度把字段写在 class 外；`private` / 类型 / 字段名已能辨认，但“字段、方法、构造方法”仍需用现有 Todo 代码再练
+- **构造方法与依赖注入没吃透**：最初认为 Repository 是自己 `new` 的；经纠正后知道是 Spring 创建并传入，但还不能独立写出和解释构造方法
+- **JPA 映射注解未独立掌握**：`@Entity` / `@Table` / `@Id` / `@GeneratedValue` / `@Column` 都是在逐行提示下完成，需要下一次逐个复述职责
+- **GET 方法结构需复练**：已能答出 `import` 不执行查询、`List<Todo>` 可含 0/1/多条、`findAll()` 触发查询，但尚不能脱离提示独立写出并讲清完整方法
 
 ---
 
 ## 📝 学习复盘记录
 > 每次学完，我在最上面追加一条。
+
+### 2026-08-20 · 第 3 周收尾 · ⚠️ 部分通过（82/100）
+- **学了什么**：Spring Data JPA 的最小链路；`Todo` 实体与 `todo` 表的字段映射；`JpaRepository<Todo, Integer>` 提供数据库操作；Spring 构造方法注入；`@GetMapping("/todos")`、`List<Todo>` 与 `findAll()`；Hibernate 自动生成 SQL。
+- **做了什么**：亲手完成 `Todo.java`（4 个字段、JPA 注解、getter）、`TodoRepository`、`TodoController` 和数据库连接配置；Spring 启动日志从 `Found 0` 变成 `Found 1 JPA repository interface`；浏览器访问 `/todos` 返回数据库中 id 1/3/4 的 3 条 JSON，控制台出现 Hibernate `SELECT`；Maven 编译与 `curl` 实测均通过。
+- **评分**：功能产出 **40/40** · 原理理解 **26/40** · 踩坑自检 **16/20** = **82/100**。
+- **判定**：⚠️ **部分通过，允许推进到第 4 周**。功能产出完整且真实跑通；最终能指出 `todoRepository.findAll()` 触发查询、Repository 负责提供数据库操作方法、对象由 Spring 注入。但 Java/JPA 原理多处必须逐词拆解后才能回答，尚未达到“每段代码都能独立讲清”的完全通过标准。
+- **还没真正掌握**：字段/方法/构造方法的结构；构造方法注入；JPA 五个映射注解；`List<Todo>` 和完整 GET 方法的独立书写；`Todo` 是“映射已有表”而不是“定义数据库表”。
+- **踩坑与自检**：字段曾写到 class 外；一开始误认为 Repository 是自己 `new`；不知道两个 import 的用途；能主动明确说“看不懂”并要求降速，随后逐步答对 `GetMapping`、`List`、`findAll()` 和三者职责。
+- **教练侧调整**：后续一次只引入一个新词；写代码前先明确文件与位置；逐词解释并让用户复述通过后才进入下一行，不再一次给出完整代码块赶进度。
+- **下一步**：下一次先用 20～30 分钟对现有 `TodoController` 做逐行复述/极小 Java 练习；通过后实现 `GET /todos/{id}`，再进入 POST 新增。
 
 ### 2026-07-30 · 第 3 周第 1 次 · 🔶 未完成（不打分，产出未达成）
 - **学了什么**：数据库为什么存在（内存 vs 硬盘、持久化、多实例共享、能高效查）、层级关系「服务器(3306) → 数据库(study) → 表(todo) → 行」、`CREATE DATABASE` / `SHOW DATABASES` / `USE`、SQL 类型与 Java 类型的对应（`INT`↔`int`、`VARCHAR(50)`↔`String`、`BOOLEAN`↔`boolean`）、`127.0.0.1:3306` 与 `localhost:8080` 是同一种「地址+端口」结构。
